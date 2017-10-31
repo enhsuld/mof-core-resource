@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TcUserLogMapper">
+<resultMap id="TcUserLog" type="TcUserLog">
+   <id property="user_id" column="user_id"/>
+     <result property="login_dtm" column="login_dtm"/>
+     <result property="logout_dtm" column="logout_dtm"/>
+     <result property="user_ip" column="user_ip"/>
+</resultMap>
+<select id="selectByPage" resultMap="TcUserLog">
+   SELECT  * FROM  ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TC_USER_LOG ${query} ${order}) b where ROWNUM <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+</select>
+<insert id="insert"  keyProperty="user_id">
+INSERT INTO
+   TC_USER_LOG (user_id,login_dtm,logout_dtm,user_ip)
+VALUES
+   (#{user_id},#{login_dtm},#{logout_dtm},#{user_ip})
+</insert>
+<update id="update">
+UPDATE
+   TC_USER_LOG
+SET
+  login_dtm = #{login_dtm},
+  logout_dtm = #{logout_dtm},
+  user_ip = #{user_ip}
+WHERE
+   user_id = #{user_id}
+</update>
+<delete id="delete">
+DELETE FROM
+   TC_USER_LOG
+WHERE
+   user_id = #{user_id}
+</delete>
+<select id="findById" resultMap="TcUserLog">
+SELECT * FROM
+   TC_USER_LOG
+WHERE
+   user_id = #{user_id}
+</select>
+<select id="selectCount" resultType="integer">
+SELECT COUNT(*) FROM
+   TC_USER_LOG ${query}
+WHERE
+    user_id = #{user_id}
+</select>
+</mapper>

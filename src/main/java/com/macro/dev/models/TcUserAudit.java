@@ -23,6 +23,7 @@ public class TcUserAudit implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 
+	private String user_id;
 	private String act_cd;
 	private String prg_id;
 	private String req_dtm;

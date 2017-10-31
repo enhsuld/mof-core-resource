@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TcUserAuditMapper">
+<resultMap id="TcUserAudit" type="TcUserAudit">
+   <id property="user_id" column="user_id"/>
+     <result property="req_dtm" column="req_dtm"/>
+     <result property="req_user_ip" column="req_user_ip"/>
+     <result property="prg_id" column="prg_id"/>
+     <result property="act_cd" column="act_cd"/>
+</resultMap>
+<select id="selectByPage" resultMap="TcUserAudit">
+   SELECT  * FROM  ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TC_USER_AUDIT ${query} ${order}) b where ROWNUM <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+</select>
+<insert id="insert"  keyProperty="user_id">
+INSERT INTO
+   TC_USER_AUDIT (user_id,req_dtm,req_user_ip,prg_id,act_cd)
+VALUES
+   (#{user_id},#{req_dtm},#{req_user_ip},#{prg_id},#{act_cd})
+</insert>
+<update id="update">
+UPDATE
+   TC_USER_AUDIT
+SET
+  req_dtm = #{req_dtm},
+  req_user_ip = #{req_user_ip},
+  prg_id = #{prg_id},
+  act_cd = #{act_cd}
+WHERE
+   user_id = #{user_id}
+</update>
+<delete id="delete">
+DELETE FROM
+   TC_USER_AUDIT
+WHERE
+   user_id = #{user_id}
+</delete>
+<select id="findById" resultMap="TcUserAudit">
+SELECT * FROM
+   TC_USER_AUDIT
+WHERE
+   user_id = #{user_id}
+</select>
+<select id="selectCount" resultType="integer">
+SELECT COUNT(*) FROM
+   TC_USER_AUDIT ${query}
+</select>
+</mapper>

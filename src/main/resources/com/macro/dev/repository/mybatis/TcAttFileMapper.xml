@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TcAttFileMapper">
+    <resultMap id="TcAttFile" type="TcAttFile">
+        <id property="att_id" column="att_id"/>
+        <result property="att_seq" column="att_seq"/>
+        <result property="att_nm" column="att_nm"/>
+        <result property="att_path" column="att_path"/>
+        <result property="file_sz" column="file_sz"/>
+        <result property="del_yn" column="del_yn"/>
+        <result property="rmk" column="rmk"/>
+        <result property="reg_id" column="reg_id"/>
+        <result property="reg_dtm" column="reg_dtm"/>
+    </resultMap>
+    <select id="selectByPage" resultMap="TcAttFile">
+        SELECT * FROM ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TC_ATT_FILE ${query} ${order}) b where ROWNUM
+        <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+    </select>
+    <insert id="insert" keyProperty="att_id">
+        INSERT INTO
+        TC_ATT_FILE (att_id,att_seq,att_nm,att_path,file_sz,del_yn,rmk,reg_id,reg_dtm)
+        VALUES
+        (tc_att_file_seq.nextval,#{att_seq},#{att_nm},#{att_path},#{file_sz},#{del_yn},#{rmk},#{reg_id},#{reg_dtm})
+    </insert>
+    <update id="update">
+        UPDATE
+        TC_ATT_FILE
+        SET
+        att_seq = #{att_seq},
+        att_nm = #{att_nm},
+        att_path = #{att_path},
+        file_sz = #{file_sz},
+        del_yn = #{del_yn},
+        rmk = #{rmk},
+        reg_id = #{reg_id},
+        reg_dtm = #{reg_dtm}
+        WHERE
+        att_id = #{att_id}
+    </update>
+    <delete id="delete">
+        DELETE FROM
+        TC_ATT_FILE
+        WHERE
+        att_id = #{att_id}
+    </delete>
+    <select id="findById" resultMap="TcAttFile">
+        SELECT * FROM
+        TC_ATT_FILE
+        WHERE
+        att_id = #{att_id}
+    </select>
+    <select id="selectCount" resultType="integer">
+        SELECT COUNT(*) FROM
+        TC_ATT_FILE ${query}
+    </select>
+</mapper>

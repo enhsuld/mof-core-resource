@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TcRoleMapper">
+<resultMap id="TcRole" type="TcRole">
+   <id property="role_id" column="role_id"/>
+     <result property="role_nm" column="role_nm"/>
+     <result property="role_nm_eng" column="role_nm_eng"/>
+     <result property="role_desc" column="role_desc"/>
+     <result property="use_yn" column="use_yn"/>
+     <result property="reg_id" column="reg_id"/>
+     <result property="reg_dtm" column="reg_dtm"/>
+     <result property="mod_id" column="mod_id"/>
+     <result property="mod_dtm" column="mod_dtm"/>
+</resultMap>
+<select id="selectByPage" resultMap="TcRole">
+   SELECT  * FROM  ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TC_ROLE ${query} ${order}) b where ROWNUM <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+</select>
+<insert id="insert"  keyProperty="role_id">
+INSERT INTO
+   TC_ROLE (role_id,role_nm,role_nm_eng,role_desc,use_yn,reg_id,reg_dtm,mod_id,mod_dtm)
+VALUES
+   (tc_role_seq.nextval,#{role_nm},#{role_nm_eng},#{role_desc},#{use_yn},#{reg_id},#{reg_dtm},#{mod_id},#{mod_dtm})
+</insert>
+<update id="update">
+UPDATE
+   TC_ROLE
+SET
+  role_nm = #{role_nm},
+  role_nm_eng = #{role_nm_eng},
+  role_desc = #{role_desc},
+  use_yn = #{use_yn},
+  reg_id = #{reg_id},
+  reg_dtm = #{reg_dtm},
+  mod_id = #{mod_id},
+  mod_dtm = #{mod_dtm}
+WHERE
+   role_id = #{role_id}
+</update>
+<delete id="delete">
+DELETE FROM
+   TC_ROLE
+WHERE
+   role_id = #{role_id}
+</delete>
+<select id="findById" resultMap="TcRole">
+SELECT * FROM
+   TC_ROLE
+WHERE
+   role_id = #{role_id}
+</select>
+<select id="selectCount" resultType="integer">
+SELECT COUNT(*) FROM
+   TC_ROLE ${query}
+</select>
+</mapper>

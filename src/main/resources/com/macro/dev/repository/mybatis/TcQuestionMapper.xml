@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TcQuestionMapper">
+<resultMap id="TcQuestion" type="TcQuestion">
+   <id property="id" column="id"/>
+     <result property="question" column="question"/>
+     <result property="answer" column="answer"/>
+     <result property="reg_dtm" column="reg_dtm"/>
+</resultMap>
+<select id="selectByPage" resultMap="TcQuestion">
+   SELECT  * FROM  ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TC_QUESTION ${query} ${order}) b where ROWNUM <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+</select>
+<insert id="insert"  keyProperty="id">
+INSERT INTO
+   TC_QUESTION (id,question,answer,reg_dtm)
+VALUES
+   (tc_question_seq.nextval,#{question},#{answer},#{reg_dtm})
+</insert>
+<update id="update">
+UPDATE
+   TC_QUESTION
+SET
+  question = #{question},
+  answer = #{answer},
+  reg_dtm = #{reg_dtm}
+WHERE
+   id = #{id}
+</update>
+<delete id="delete">
+DELETE FROM
+   TC_QUESTION
+WHERE
+   id = #{id}
+</delete>
+<select id="findById" resultMap="TcQuestion">
+SELECT * FROM
+   TC_QUESTION
+WHERE
+   id = #{id}
+</select>
+<select id="selectCount" resultType="integer">
+SELECT COUNT(*) FROM
+   TC_QUESTION ${query}
+</select>
+</mapper>

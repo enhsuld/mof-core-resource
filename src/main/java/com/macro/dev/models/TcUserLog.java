@@ -24,6 +24,7 @@ public class TcUserLog implements Serializable {
 
 	private String login_dtm;
 	private String logout_dtm;
+	private String user_id;
 	private String user_ip;
 	private TcUser tcUser;
 

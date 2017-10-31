@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TcUserRoleMapper">
+    <resultMap id="TcUserRole" type="TcUserRole">
+        <result property="user_id" column="user_id"/>
+        <result property="role_id" column="role_id"/>
+        <result property="reg_id" column="reg_id"/>
+        <result property="reg_dtm" column="reg_dtm"/>
+    </resultMap>
+    <select id="selectByPage" resultMap="TcUserRole">
+        SELECT * FROM ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TC_USER_ROLE ${query} ${order}) b where ROWNUM
+        <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+    </select>
+    <insert id="insert">
+        INSERT INTO
+        TC_USER_ROLE (user_id,role_id,reg_id,reg_dtm)
+        VALUES
+        (#{user_id},#{role_id},#{reg_id},#{reg_dtm})
+    </insert>
+    <update id="update">
+        UPDATE
+        TC_USER_ROLE
+        SET
+        reg_id = #{reg_id},
+        reg_dtm = #{reg_dtm}
+        WHERE
+        user_id = #{user_id}
+        and role_id = #{role_id}
+    </update>
+    <delete id="delete">
+        DELETE FROM
+        TC_USER_ROLE
+        WHERE
+        user_id = #{user_id}
+        and role_id = #{role_id}
+    </delete>
+    <select id="findById" resultMap="TcUserRole">
+        SELECT * FROM
+        TC_USER_ROLE
+        WHERE
+        user_id = #{user_id}
+        and role_id = #{role_id}
+    </select>
+    <select id="selectCount" resultType="integer">
+        SELECT COUNT(*) FROM
+        TC_USER_ROLE ${query}
+        WHERE
+        user_id = #{user_id}
+        and role_id = #{role_id}
+    </select>
+</mapper>

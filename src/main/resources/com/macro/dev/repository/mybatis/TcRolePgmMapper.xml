@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TcRolePgmMapper">
+<resultMap id="TcRolePgm" type="TcRolePgm">
+   <result property="role_id" column="role_id"/>
+     <result property="pgm_id" column="pgm_id"/>
+     <result property="init_yn" column="init_yn"/>
+     <result property="iqry_yn" column="iqry_yn"/>
+     <result property="save_yn" column="save_yn"/>
+     <result property="del_yn" column="del_yn"/>
+     <result property="excl_yn" column="excl_yn"/>
+     <result property="prnt_yn" column="prnt_yn"/>
+     <result property="help_yn" column="help_yn"/>
+     <result property="use_yn" column="use_yn"/>
+     <result property="reg_id" column="reg_id"/>
+     <result property="reg_dtm" column="reg_dtm"/>
+     <result property="mod_id" column="mod_id"/>
+     <result property="mod_dtm" column="mod_dtm"/>
+</resultMap>
+<select id="selectByPage" resultMap="TcRolePgm">
+   SELECT  * FROM  ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TC_ROLE_PGM ${query} ${order}) b where ROWNUM <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+</select>
+<insert id="insert">
+INSERT INTO
+   TC_ROLE_PGM (role_id,pgm_id,init_yn,iqry_yn,save_yn,del_yn,excl_yn,prnt_yn,help_yn,use_yn,reg_id,reg_dtm,mod_id,mod_dtm)
+VALUES
+   (#{role_id},#{pgm_id},#{init_yn},#{iqry_yn},#{save_yn},#{del_yn},#{excl_yn},#{prnt_yn},#{help_yn},#{use_yn},#{reg_id},#{reg_dtm},#{mod_id},#{mod_dtm})
+</insert>
+<update id="update">
+UPDATE
+   TC_ROLE_PGM
+SET
+  init_yn = #{init_yn},
+  iqry_yn = #{iqry_yn},
+  save_yn = #{save_yn},
+  del_yn = #{del_yn},
+  excl_yn = #{excl_yn},
+  prnt_yn = #{prnt_yn},
+  help_yn = #{help_yn},
+  use_yn = #{use_yn},
+  reg_id = #{reg_id},
+  reg_dtm = #{reg_dtm},
+  mod_id = #{mod_id},
+  mod_dtm = #{mod_dtm}
+WHERE
+   role_id = #{role_id}
+    and pgm_id = #{pgm_id}
+</update>
+<delete id="delete">
+DELETE FROM
+   TC_ROLE_PGM
+WHERE
+    role_id = #{role_id}
+    and pgm_id = #{pgm_id}
+</delete>
+<select id="findById" resultMap="TcRolePgm">
+SELECT * FROM
+   TC_ROLE_PGM
+WHERE
+    role_id = #{role_id}
+    and pgm_id = #{pgm_id}
+</select>
+<select id="selectCount" resultType="integer">
+SELECT COUNT(*) FROM
+   TC_ROLE_PGM ${query}
+    WHERE
+    role_id = #{role_id}
+    and pgm_id = #{pgm_id}
+</select>
+</mapper>

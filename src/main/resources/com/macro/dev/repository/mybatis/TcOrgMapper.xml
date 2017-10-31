@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TcOrgMapper">
+    <resultMap id="TcOrg" type="TcOrg">
+        <id property="org_cd" column="org_cd"/>
+        <result property="org_nm" column="org_nm"/>
+        <result property="org_nm_eng" column="org_nm_eng"/>
+        <result property="org_div_cd" column="org_div_cd"/>
+        <result property="org_lv_cd" column="org_lv_cd"/>
+        <result property="uppr_org_cd" column="uppr_org_cd"/>
+        <result property="aply_dt" column="aply_dt"/>
+        <result property="clse_dt" column="clse_dt"/>
+        <result property="use_yn" column="use_yn"/>
+        <result property="org_ord" column="org_ord"/>
+        <result property="tel_no" column="tel_no"/>
+        <result property="fax_no" column="fax_no"/>
+        <result property="addr1_cd" column="addr1_cd"/>
+        <result property="addr2_cd" column="addr2_cd"/>
+        <result property="addr_dtl" column="addr_dtl"/>
+        <result property="org_hdcf_nm" column="org_hdcf_nm"/>
+        <result property="reg_id" column="reg_id"/>
+        <result property="reg_dtm" column="reg_dtm"/>
+        <result property="mod_id" column="mod_id"/>
+        <result property="mod_dtm" column="mod_dtm"/>
+    </resultMap>
+    <select id="selectByPage" resultMap="TcOrg">
+        SELECT * FROM ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TC_ORG ${query} ${order}) b where ROWNUM
+        <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+    </select>
+    <insert id="insert" keyProperty="org_cd">
+        INSERT INTO
+        TC_ORG
+        (org_cd,org_nm,org_nm_eng,org_div_cd,org_lv_cd,uppr_org_cd,aply_dt,clse_dt,use_yn,org_ord,tel_no,fax_no,addr1_cd,addr2_cd,addr_dtl,org_hdcf_nm,reg_id,reg_dtm,mod_id,mod_dtm)
+        VALUES
+        (tc_org_seq.nextval,#{org_nm},#{org_nm_eng},#{org_div_cd},#{org_lv_cd},#{uppr_org_cd},#{aply_dt},#{clse_dt},#{use_yn},#{org_ord},#{tel_no},#{fax_no},#{addr1_cd},#{addr2_cd},#{addr_dtl},#{org_hdcf_nm},#{reg_id},#{reg_dtm},#{mod_id},#{mod_dtm})
+    </insert>
+    <update id="update">
+        UPDATE
+        TC_ORG
+        SET
+        org_nm = #{org_nm},
+        org_nm_eng = #{org_nm_eng},
+        org_div_cd = #{org_div_cd},
+        org_lv_cd = #{org_lv_cd},
+        uppr_org_cd = #{uppr_org_cd},
+        aply_dt = #{aply_dt},
+        clse_dt = #{clse_dt},
+        use_yn = #{use_yn},
+        org_ord = #{org_ord},
+        tel_no = #{tel_no},
+        fax_no = #{fax_no},
+        addr1_cd = #{addr1_cd},
+        addr2_cd = #{addr2_cd},
+        addr_dtl = #{addr_dtl},
+        org_hdcf_nm = #{org_hdcf_nm},
+        reg_id = #{reg_id},
+        reg_dtm = #{reg_dtm},
+        mod_id = #{mod_id},
+        mod_dtm = #{mod_dtm}
+        WHERE
+        org_cd = #{org_cd}
+    </update>
+    <delete id="delete">
+        DELETE FROM
+        TC_ORG
+        WHERE
+        org_cd = #{org_cd}
+    </delete>
+    <select id="findById" resultMap="TcOrg">
+        SELECT * FROM
+        TC_ORG
+        WHERE
+        org_cd = #{org_cd}
+    </select>
+    <select id="selectCount" resultType="integer">
+        SELECT COUNT(*) FROM
+        TC_ORG ${query}
+    </select>
+</mapper>
