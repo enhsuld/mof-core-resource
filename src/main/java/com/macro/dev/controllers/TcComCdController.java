@@ -23,7 +23,7 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/file")
+@RequestMapping("/api/com_cd")
 public class TcComCdController {
 
     private TcComCdService tcFaqService;
@@ -68,7 +68,7 @@ public class TcComCdController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> postTcFaq(@RequestParam(value = "data", required = false) String jsonString) throws JSONException {
+    public ResponseEntity<?> postTc(@RequestParam(value = "data", required = false) String jsonString) throws JSONException {
         JSONObject obj = new JSONObject(jsonString);
         TcComCd tcFaq = new TcComCd();
         tcFaq.setGrp_cd(obj.getString("grp_cd"));

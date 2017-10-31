@@ -23,7 +23,7 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/file")
+@RequestMapping("/api/user_role")
 public class TcUserRoleController {
 
     private TcUserRoleService tcFaqService;

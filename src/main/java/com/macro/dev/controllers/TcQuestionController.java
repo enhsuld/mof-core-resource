@@ -23,7 +23,7 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/file")
+@RequestMapping("/api/question")
 public class TcQuestionController {
 
     private TcQuestionService tcFaqService;

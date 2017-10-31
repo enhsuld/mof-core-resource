@@ -23,7 +23,7 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/file")
+@RequestMapping("/api/user_log")
 public class TcUserLogController {
 
     private TcUserLogService tcFaqService;
