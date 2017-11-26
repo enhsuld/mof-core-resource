@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TmRevenueConfigMapper">
+    <resultMap id="TmRevenueConfig" type="TmRevenueConfig">
+        <id property="rbiId" column="rbi_id"/>
+        <result property="comCd" column="com_cd"/>
+        <result property="comCd1" column="com_cd1"/>
+        <result property="btPt" column="bt_pt"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDtm" column="reg_dtm"/>
+        <result property="modId" column="mod_id"/>
+        <result property="modDtm" column="mod_dtm"/>
+    </resultMap>
+    <select id="selectByPage" resultMap="TmRevenueConfig">
+        SELECT  * FROM  ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TM_REVENUE_CONFIG ${query} ${order}) b where ROWNUM <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+    </select>
+    <insert id="insert"  keyProperty="rbiId">
+        INSERT INTO
+        TM_REVENUE_CONFIG (rbi_id,com_cd,com_cd1,bt_pt,use_yn,reg_id,reg_dtm,mod_id,mod_dtm)
+        VALUES
+        (tm_revenue_config_seq.nextval,#{comCd},#{comCd1},#{btPt},#{useYn},#{regId},#{regDtm},#{modId},#{modDtm})
+    </insert>
+    <update id="update">
+        UPDATE
+        TM_REVENUE_CONFIG
+        SET
+        com_cd = #{comCd},
+        com_cd1 = #{comCd1},
+        bt_pt = #{btPt},
+        use_yn = #{useYn},
+        reg_id = #{regId},
+        reg_dtm = #{regDtm},
+        mod_id = #{modId},
+        mod_dtm = #{modDtm}
+        WHERE
+        rbi_id = #{rbiId}
+    </update>
+    <delete id="delete">
+        DELETE FROM
+        TM_REVENUE_CONFIG
+        WHERE
+        rbi_id = #{rbiId}
+    </delete>
+    <select id="findById" resultMap="TmRevenueConfig">
+        SELECT * FROM
+        TM_REVENUE_CONFIG
+        WHERE
+        rbi_id = #{rbiId}
+    </select>
+    <select id="selectCount" resultType="integer">
+        SELECT COUNT(*) FROM
+        TM_REVENUE_CONFIG ${query}
+    </select>
+</mapper>

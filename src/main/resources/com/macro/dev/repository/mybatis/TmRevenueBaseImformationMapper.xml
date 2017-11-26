@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TmRevenueBaseImformationMapper">
+    <resultMap id="TmRevenueBaseImformation" type="TmRevenueBaseImformation">
+        <id property="rbiId" column="rbi_id"/>
+        <result property="orgCd" column="org_cd"/>
+        <result property="comCd" column="com_cd"/>
+        <result property="rbiNm" column="rbi_nm"/>
+        <result property="unitMst" column="unit_mst"/>
+        <result property="revTtl" column="rev_ttl"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDtm" column="reg_dtm"/>
+        <result property="modId" column="mod_id"/>
+        <result property="modDtm" column="mod_dtm"/>
+    </resultMap>
+    <select id="selectByPage" resultMap="TmRevenueBaseImformation">
+        SELECT  * FROM  ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TM_REVENUE_BASE_IMFORMATION ${query} ${order}) b where ROWNUM <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+    </select>
+    <insert id="insert"  keyProperty="rbiId">
+        INSERT INTO
+        TM_REVENUE_BASE_IMFORMATION (rbi_id,org_cd,com_cd,rbi_nm,unit_mst,rev_ttl,use_yn,reg_id,reg_dtm,mod_id,mod_dtm)
+        VALUES
+        (tm_revenue_base_imformation_seq.nextval,#{orgCd},#{comCd},#{rbiNm},#{unitMst},#{revTtl},#{useYn},#{regId},#{regDtm},#{modId},#{modDtm})
+    </insert>
+    <update id="update">
+        UPDATE
+        TM_REVENUE_BASE_IMFORMATION
+        SET
+        org_cd = #{orgCd},
+        com_cd = #{comCd},
+        rbi_nm = #{rbiNm},
+        unit_mst = #{unitMst},
+        rev_ttl = #{revTtl},
+        use_yn = #{useYn},
+        reg_id = #{regId},
+        reg_dtm = #{regDtm},
+        mod_id = #{modId},
+        mod_dtm = #{modDtm}
+        WHERE
+        rbi_id = #{rbiId}
+    </update>
+    <delete id="delete">
+        DELETE FROM
+        TM_REVENUE_BASE_IMFORMATION
+        WHERE
+        rbi_id = #{rbiId}
+    </delete>
+    <select id="findById" resultMap="TmRevenueBaseImformation">
+        SELECT * FROM
+        TM_REVENUE_BASE_IMFORMATION
+        WHERE
+        rbi_id = #{rbiId}
+    </select>
+    <select id="selectCount" resultType="integer">
+        SELECT COUNT(*) FROM
+        TM_REVENUE_BASE_IMFORMATION ${query}
+    </select>
+</mapper>

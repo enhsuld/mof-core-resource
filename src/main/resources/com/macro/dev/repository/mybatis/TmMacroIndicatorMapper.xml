@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TmMacroIndicatorMapper">
+    <resultMap id="TmMacroIndicator" type="TmMacroIndicator">
+        <id property="miId" column="mi_id"/>
+        <result property="comCd" column="com_cd"/>
+        <result property="unitMst" column="unit_mst"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDtm" column="reg_dtm"/>
+        <result property="modId" column="mod_id"/>
+        <result property="modDtm" column="mod_dtm"/>
+    </resultMap>
+    <select id="selectByPage" resultMap="TmMacroIndicator">
+        SELECT  * FROM  ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TM_MACRO_INDICATOR ${query} ${order}) b where ROWNUM <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+    </select>
+    <insert id="insert"  keyProperty="miId">
+        INSERT INTO
+        TM_MACRO_INDICATOR (mi_id,com_cd,unit_mst,use_yn,reg_id,reg_dtm,mod_id,mod_dtm)
+        VALUES
+        (tm_macro_indicator_seq.nextval,#{comCd},#{unitMst},#{useYn},#{regId},#{regDtm},#{modId},#{modDtm})
+    </insert>
+    <update id="update">
+        UPDATE
+        TM_MACRO_INDICATOR
+        SET
+        com_cd = #{comCd},
+        unit_mst = #{unitMst},
+        use_yn = #{useYn},
+        reg_id = #{regId},
+        reg_dtm = #{regDtm},
+        mod_id = #{modId},
+        mod_dtm = #{modDtm}
+        WHERE
+        mi_id = #{miId}
+    </update>
+    <delete id="delete">
+        DELETE FROM
+        TM_MACRO_INDICATOR
+        WHERE
+        mi_id = #{miId}
+    </delete>
+    <select id="findById" resultMap="TmMacroIndicator">
+        SELECT * FROM
+        TM_MACRO_INDICATOR
+        WHERE
+        mi_id = #{miId}
+    </select>
+    <select id="selectCount" resultType="integer">
+        SELECT COUNT(*) FROM
+        TM_MACRO_INDICATOR ${query}
+    </select>
+</mapper>

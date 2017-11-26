@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TmMtefMapper">
+    <resultMap id="TmMtef" type="TmMtef">
+        <id property="mtefId" column="mtef_id"/>
+        <result property="rngYr" column="rng_yr"/>
+        <result property="srtYr" column="srt_yr"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDtm" column="reg_dtm"/>
+        <result property="modId" column="mod_id"/>
+        <result property="modDtm" column="mod_dtm"/>
+    </resultMap>
+    <select id="selectByPage" resultMap="TmMtef">
+        SELECT * FROM ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TM_MTEF ${query} ${order}) b where ROWNUM
+        <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+    </select>
+    <insert id="insert" keyProperty="mtefId">
+        INSERT INTO
+        TM_MTEF (mtef_id,rng_yr,srt_yr,use_yn,reg_id,reg_dtm,mod_id,mod_dtm)
+        VALUES
+        (tm_mtef_seq.nextval,#{rngYr},#{srtYr},#{useYn},#{regId},#{regDtm},#{modId},#{modDtm})
+    </insert>
+    <update id="update">
+        UPDATE
+        TM_MTEF
+        SET
+        rng_yr = #{rngYr},
+        srt_yr = #{srtYr},
+        use_yn = #{useYn},
+        reg_id = #{regId},
+        reg_dtm = #{regDtm},
+        mod_id = #{modId},
+        mod_dtm = #{modDtm}
+        WHERE
+        mtef_id = #{mtefId}
+    </update>
+    <delete id="delete">
+        DELETE FROM
+        TM_MTEF
+        WHERE
+        mtef_id = #{mtefId}
+    </delete>
+    <select id="findById" resultMap="TmMtef">
+        SELECT * FROM
+        TM_MTEF
+        WHERE
+        mtef_id = #{mtefId}
+    </select>
+    <select id="selectCount" resultType="integer">
+        SELECT COUNT(*) FROM
+        TM_MTEF ${query}
+    </select>
+</mapper>

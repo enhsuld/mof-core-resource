@@ -6,9 +6,9 @@ import com.macro.dev.constant.PageUtil;
 import com.macro.dev.constant.PaginatedResult;
 import com.macro.dev.constant.ResourceNameConstant;
 import com.macro.dev.constant.exception.ResourceNotFoundException;
-import com.macro.dev.models.TcFaq;
+import com.macro.dev.models.TmFiscalApprove;
 import com.macro.dev.services.Services;
-import com.macro.dev.services.TcFaqService;
+import com.macro.dev.services.TmFiscalApproveService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,21 +24,21 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/faq")
-public class TcFaqController {
+@RequestMapping("/api/tm_fiscal_approve")
+public class TmFiscalApproveController {
 
-    private TcFaqService tcFaqService;
+    private TmFiscalApproveService service;
 
     @Autowired
-    public TcFaqController(TcFaqService tcFaqService) {
-        this.tcFaqService = tcFaqService;
+    public TmFiscalApproveController(TmFiscalApproveService service) {
+        this.service = service;
     }
 
     @Autowired
     private Services services;
 
     @GetMapping("/list")
-    public ResponseEntity<?> getTcFaqs(
+    public ResponseEntity<?> getList(
             @RequestParam(value = "page", required = false) String pageString,
             @RequestParam(value = "data", required = false) String data,
             @RequestParam(value = "pageSize", required = false) String pageSize) throws JSONException {
@@ -57,69 +57,75 @@ public class TcFaqController {
         int perPage = PageUtil.parsePerPage(pageSize, PageConstant.PER_PAGE);
         return ResponseEntity
                 .ok(new PaginatedResult()
-                        .setData(tcFaqService.getTcFaqsByPage(page, perPage,query,order))
+                        .setData(service.getByPage(page, perPage,query,order))
                         .setCurrentPage(page)
-                        .setTotal(tcFaqService.getTotalPage(perPage,query)));
+                        .setTotal(service.getTotalPage(perPage,query)));
     }
 
     @GetMapping("/{id}")
-    public Optional<TcFaq> getTcFaqById(@PathVariable String id) {
-        return tcFaqService
-                .getTcFaqById(id);
+    public Optional<TmFiscalApprove> getById(@PathVariable String id) {
+        return service
+                .getById(id);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> postTcFaq(@RequestParam(value = "data", required = false) String jsonString) throws JSONException {
+    public ResponseEntity<?> post(@RequestParam(value = "data", required = false) String jsonString) throws JSONException {
         JSONObject obj = new JSONObject(jsonString);
-        TcFaq tcFaq = new TcFaq();
-        tcFaq.setAnswer(obj.getString("answer"));
-        tcFaq.setQuestion(obj.getString("question"));
-        tcFaq.setRank(obj.getLong("rank"));
-        tcFaqService.saveTcFaq(tcFaq);
+        TmFiscalApprove objectClass = new TmFiscalApprove();
+        objectClass.setFslCd(obj.getString("fslCd"));
+        objectClass.setExpVt(obj.getInt("expVt"));
+        objectClass.setExpTtl(obj.getInt("expTtl"));
+        objectClass.setUseYn(obj.getString("useYn"));
+        objectClass.setRegId(obj.getString("regId"));
+        objectClass.setRegDtm(obj.getString("regDtm"));
+        objectClass.setModId(obj.getString("modId"));
+        objectClass.setModDtm(obj.getString("modDtm"));
+        service.save(objectClass);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(tcFaq.getId())
+                .buildAndExpand(objectClass.getFslId())
                 .toUri();
 
         return ResponseEntity
                 .created(location)
-                .body(tcFaq);
+                .body(objectClass);
 
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> putTcFaq(@RequestParam(value = "data", required = false) String jsonString) throws JSONException {
+    public ResponseEntity<?> put(@RequestParam(value = "data", required = false) String jsonString) throws JSONException {
         JSONObject obj = new JSONObject(jsonString);
         Gson gson = new Gson();
-        TcFaq tcFaq = gson.fromJson(jsonString,TcFaq.class);
+        TmFiscalApprove objectClass = gson.fromJson(jsonString,TmFiscalApprove.class);
 
-        assertTcFaqExist(obj.getString("id"));
+        assertExist(obj.getString("id"));
 
-        tcFaqService.modifyTcFaq(tcFaq.setId(obj.getString("id")));
+        service.modify(objectClass.setFslId(obj.getString("id")));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(tcFaq);
+                .body(objectClass);
     }
 
     @GetMapping("/delete")
-    public Boolean deleteTcFaq(HttpServletRequest req) throws JSONException {
+    public Boolean delete(HttpServletRequest req) throws JSONException {
 
-        assertTcFaqExist(req.getParameter("id"));
-        tcFaqService.deleteTcFaqById(req.getParameter("id"));
+        assertExist(req.getParameter("id"));
+        service.deleteById(req.getParameter("id"));
 
         return true;
     }
 
     /********************************** HELPER METHOD **********************************/
-    private void assertTcFaqExist(String id) {
-        tcFaqService
-                .getTcFaqById(id)
+    private void assertExist(String id) {
+        service
+                .getById(id)
                 .orElseThrow(() -> new ResourceNotFoundException()
-                        .setResourceName(ResourceNameConstant.TcFaq)
+                        .setResourceName(ResourceNameConstant.TmFiscalApprove)
                         .setId(id));
     }
 
 }
+

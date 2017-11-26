@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TmFiscalApproveMapper">
+    <resultMap id="TmFiscalApprove" type="TmFiscalApprove">
+        <id property="fslId" column="fsl_id"/>
+        <result property="fslCd" column="fsl_cd"/>
+        <result property="expVt" column="exp_vt"/>
+        <result property="expTtl" column="exp_ttl"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDtm" column="reg_dtm"/>
+        <result property="modId" column="mod_id"/>
+        <result property="modDtm" column="mod_dtm"/>
+    </resultMap>
+    <select id="selectByPage" resultMap="TmFiscalApprove">
+        SELECT  * FROM  ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TM_FISCAL_APPROVE ${query} ${order}) b where ROWNUM <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+    </select>
+    <insert id="insert"  keyProperty="fslId">
+        INSERT INTO
+        TM_FISCAL_APPROVE (fsl_id,fsl_cd,exp_vt,exp_ttl,use_yn,reg_id,reg_dtm,mod_id,mod_dtm)
+        VALUES
+        (tm_fiscal_approve_seq.nextval,#{fslCd},#{expVt},#{expTtl},#{useYn},#{regId},#{regDtm},#{modId},#{modDtm})
+    </insert>
+    <update id="update">
+        UPDATE
+        TM_FISCAL_APPROVE
+        SET
+        fsl_cd = #{fslCd},
+        exp_vt = #{expVt},
+        exp_ttl = #{expTtl},
+        use_yn = #{useYn},
+        reg_id = #{regId},
+        reg_dtm = #{regDtm},
+        mod_id = #{modId},
+        mod_dtm = #{modDtm}
+        WHERE
+        fsl_id = #{fslId}
+    </update>
+    <delete id="delete">
+        DELETE FROM
+        TM_FISCAL_APPROVE
+        WHERE
+        fsl_id = #{fslId}
+    </delete>
+    <select id="findById" resultMap="TmFiscalApprove">
+        SELECT * FROM
+        TM_FISCAL_APPROVE
+        WHERE
+        fsl_id = #{fslId}
+    </select>
+    <select id="selectCount" resultType="integer">
+        SELECT COUNT(*) FROM
+        TM_FISCAL_APPROVE ${query}
+    </select>
+</mapper>

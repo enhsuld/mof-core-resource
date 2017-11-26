@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TmRevenueApproveMapper">
+    <resultMap id="TmRevenueApprove" type="TmRevenueApprove">
+        <id property="rvnId" column="rvn_id"/>
+        <result property="revCl" column="rev_cl"/>
+        <result property="revVt" column="rev_vt"/>
+        <result property="revTtl" column="rev_ttl"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDtm" column="reg_dtm"/>
+        <result property="modId" column="mod_id"/>
+        <result property="modDtm" column="mod_dtm"/>
+    </resultMap>
+    <select id="selectByPage" resultMap="TmRevenueApprove">
+        SELECT  * FROM  ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TM_REVENUE_APPROVE ${query} ${order}) b where ROWNUM <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+    </select>
+    <insert id="insert"  keyProperty="rvnId">
+        INSERT INTO
+        TM_REVENUE_APPROVE (rvn_id,rev_cl,rev_vt,rev_ttl,use_yn,reg_id,reg_dtm,mod_id,mod_dtm)
+        VALUES
+        (tm_revenue_approve_seq.nextval,#{revCl},#{revVt},#{revTtl},#{useYn},#{regId},#{regDtm},#{modId},#{modDtm})
+    </insert>
+    <update id="update">
+        UPDATE
+        TM_REVENUE_APPROVE
+        SET
+        rev_cl = #{revCl},
+        rev_vt = #{revVt},
+        rev_ttl = #{revTtl},
+        use_yn = #{useYn},
+        reg_id = #{regId},
+        reg_dtm = #{regDtm},
+        mod_id = #{modId},
+        mod_dtm = #{modDtm}
+        WHERE
+        rvn_id = #{rvnId}
+    </update>
+    <delete id="delete">
+        DELETE FROM
+        TM_REVENUE_APPROVE
+        WHERE
+        rvn_id = #{rvnId}
+    </delete>
+    <select id="findById" resultMap="TmRevenueApprove">
+        SELECT * FROM
+        TM_REVENUE_APPROVE
+        WHERE
+        rvn_id = #{rvnId}
+    </select>
+    <select id="selectCount" resultType="integer">
+        SELECT COUNT(*) FROM
+        TM_REVENUE_APPROVE ${query}
+    </select>
+</mapper>

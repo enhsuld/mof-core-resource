@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.dev.repository.mybatis.TmDebtMapper">
+    <resultMap id="TmDebt" type="TmDebt">
+        <id property="debtId" column="debt_id"/>
+        <result property="debtYr" column="debt_yr"/>
+        <result property="debtLn" column="debt_ln"/>
+        <result property="debtInt" column="debt_int"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDtm" column="reg_dtm"/>
+        <result property="modId" column="mod_id"/>
+        <result property="modDtm" column="mod_dtm"/>
+    </resultMap>
+    <select id="selectByPage" resultMap="TmDebt">
+        SELECT  * FROM  ( SELECT b.*, ROWNUM RN FROM (SELECT * FROM TM_DEBT ${query} ${order}) b where ROWNUM <![CDATA[ <= ]]> #{perPage}) WHERE RN > #{offset}
+    </select>
+    <insert id="insert"  keyProperty="debtId">
+        INSERT INTO
+        TM_DEBT (debt_id,debt_yr,debt_ln,debt_int,use_yn,reg_id,reg_dtm,mod_id,mod_dtm)
+        VALUES
+        (tm_debt_seq.nextval,#{debtYr},#{debtLn},#{debtInt},#{useYn},#{regId},#{regDtm},#{modId},#{modDtm})
+    </insert>
+    <update id="update">
+        UPDATE
+        TM_DEBT
+        SET
+        debt_yr = #{debtYr},
+        debt_ln = #{debtLn},
+        debt_int = #{debtInt},
+        use_yn = #{useYn},
+        reg_id = #{regId},
+        reg_dtm = #{regDtm},
+        mod_id = #{modId},
+        mod_dtm = #{modDtm}
+        WHERE
+        debt_id = #{debtId}
+    </update>
+    <delete id="delete">
+        DELETE FROM
+        TM_DEBT
+        WHERE
+        debt_id = #{debtId}
+    </delete>
+    <select id="findById" resultMap="TmDebt">
+        SELECT * FROM
+        TM_DEBT
+        WHERE
+        debt_id = #{debtId}
+    </select>
+    <select id="selectCount" resultType="integer">
+        SELECT COUNT(*) FROM
+        TM_DEBT ${query}
+    </select>
+</mapper>
